@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zeljk\\source\\repos\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj": {}
+    "C:\\Users\\zeljk\\Desktop\\DIS-labovi\\Zeljko9999-hw-03\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zeljk\\source\\repos\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj": {
+    "C:\\Users\\zeljk\\Desktop\\DIS-labovi\\Zeljko9999-hw-03\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zeljk\\source\\repos\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj",
+        "projectUniqueName": "C:\\Users\\zeljk\\Desktop\\DIS-labovi\\Zeljko9999-hw-03\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj",
         "projectName": "FactoryApplication",
-        "projectPath": "C:\\Users\\zeljk\\source\\repos\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj",
+        "projectPath": "C:\\Users\\zeljk\\Desktop\\DIS-labovi\\Zeljko9999-hw-03\\FactoryApplication\\FactoryApplication\\FactoryApplication.csproj",
         "packagesPath": "C:\\Users\\zeljk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zeljk\\source\\repos\\FactoryApplication\\FactoryApplication\\obj\\",
+        "outputPath": "C:\\Users\\zeljk\\Desktop\\DIS-labovi\\Zeljko9999-hw-03\\FactoryApplication\\FactoryApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zeljk\\AppData\\Roaming\\NuGet\\NuGet.Config",
