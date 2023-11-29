@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
  **********************************
  * Author: Željko Kalajžić
  * Project Task: Homework 3 - Cars factory
