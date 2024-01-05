@@ -6,18 +6,18 @@ namespace FactoryApplication.Repositories.Interfaces
 {
     public interface ICarRepository
     {
-        public bool CreateNewCar(Car car);
+        void CreateNewCar(Car car);
 
 
-        public IEnumerable<Car> GetAllCars();
+        List<Car> GetAllCars();
 
  
-        public Car GetCar(int id);
+        Car? GetCar(int id);
 
 
-        public bool UpdateCar(int id, Car newCar);
+        void UpdateCar(int id, Car updatedCar);
 
 
-        public bool DeleteCar(int id);
+        void DeleteCar(int id);
     }
 }
