@@ -20,6 +20,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FactoryApplication.Models;
 using FactoryApplication.Repositories;
+using FactoryApplication.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FactoryApplication.Controllers
 {
@@ -28,12 +32,12 @@ namespace FactoryApplication.Controllers
     public class CarController : ControllerBase
     {
 
-        private readonly CarRepository m_carRepository;
+        private readonly ICarRepository carRepository;
 
 
-        public CarController(CarRepository carRepository)
+        public CarController(ICarRepository carRepository)
         {
-            m_carRepository = carRepository;
+            this.carRepository = carRepository;
         }
 
 
@@ -42,10 +46,10 @@ namespace FactoryApplication.Controllers
         [HttpPost("/cars/new")]
         public IActionResult CreateNewCar([FromBody] Car car)
         {
-            bool fSuccess = m_carRepository.CreateNewCar(car);
 
-            if (fSuccess)
+            if (car != null)
             {
+                carRepository.CreateNewCar(car);
                 return Ok("Car succesfully created!");
             }
             else
@@ -60,7 +64,7 @@ namespace FactoryApplication.Controllers
         [HttpGet("/cars/all")]
         public IActionResult GetAllCars()
         {
-            return Ok(m_carRepository.GetAllCars());
+            return Ok(carRepository.GetAllCars());
         }
 
 
@@ -69,7 +73,7 @@ namespace FactoryApplication.Controllers
         [HttpGet("/cars/{id}")]
         public IActionResult GetCarById([FromRoute] int id)
         {
-            var car = m_carRepository.GetCar(id);
+            var car = carRepository.GetCar(id);
 
             if (car is null)
             {
@@ -81,37 +85,44 @@ namespace FactoryApplication.Controllers
             }
         }
 
-        
+
         // Update Operation - Update the car with the specified ID
 
-        [HttpPost("/cars/{id}")]
-        public IActionResult UpdateCarById([FromRoute] int id, [FromBody] Car newCar)
+        [HttpPut("/cars/{id}")]
+        public IActionResult UpdateCarById([FromRoute] int id, [FromBody] Car updatedCar)
         {
-            if (m_carRepository.UpdateCar(id, newCar))
+
+            if (updatedCar == null)
             {
-                return Ok($"Succesfully updated the car with ID = {id}");
+                return BadRequest($"Error while updating an car!");
             }
-            else
+
+            var existingCar = carRepository.GetCar(id);
+            if (existingCar == null)
             {
                 return NotFound($"Could not find the car with ID = {id}");
             }
+
+            carRepository.UpdateCar(id, updatedCar);
+
+            return Ok($"Succesfully updated the car with ID = {id}");
+
         }
 
+// Delete Operation - Delete the car with the specified ID
 
-        // Delete Operation - Delete the car with the specified ID
-
-        [HttpDelete("/cars/{id}")]
+[HttpDelete("/cars/{id}")]
         public IActionResult DeleteCarById([FromRoute] int id)
         {
-            if (m_carRepository.DeleteCar(id))
-            {
-                return Ok($"Succesfully deleted the car with ID = {id}");
-            }
-            else
+            var car = carRepository.GetCar(id);
+            if (car == null)
             {
                 return NotFound($"Could not find an car with ID = {id}");
             }
-        }
 
+            carRepository.DeleteCar(id);
+            return Ok($"Succesfully deleted the car with ID = {id}");
+
+        }
     }
 }

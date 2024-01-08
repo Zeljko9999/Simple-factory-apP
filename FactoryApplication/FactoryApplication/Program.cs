@@ -14,6 +14,7 @@
  */
 
 using FactoryApplication.Repositories;
+using FactoryApplication.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<CarRepository>();
+builder.Services.AddSingleton<ICarRepository, CarRespository_SQL>();
 
 var app = builder.Build();
 

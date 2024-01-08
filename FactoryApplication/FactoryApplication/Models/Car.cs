@@ -27,10 +27,9 @@ namespace FactoryApplication.Models
         public string? Model { get; set; }
         public decimal? Price { get; set; }
 
-        public string ManufacturingDate { get; set; }
-
-        public bool IsAvailable { get; set; }
+        public DateTime ManufacturingDate { get; set; }
         public int QuantityInStock { get; set; }
+        public bool IsAvailable { get; set; }
         public List<string> Features { get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace FactoryApplication.Repositories
     {
         // A list of all cars
         private List<Car> m_lstCar;
-        private object m_oLock = new object();
 
         public CarRepository()
         {       
@@ -33,43 +32,19 @@ namespace FactoryApplication.Repositories
         }
 
 
-        // Generate a random unique id for a new car
-
-        private int GenerateUniqueId()
-        {
-            int generatedId;
-
-            lock (m_oLock)
-            {
-                do
-                {
-                    generatedId = Random.Shared.Next(0, 10);
-                }
-                while (m_lstCar.Any(car => car.Id == generatedId));
-            }
-
-            return generatedId;
-        }
-
-
         // Create Operation: Create an car object
 
-        public bool CreateNewCar(Car car)
+        public void CreateNewCar(Car car)
         {
-            car.Id = GenerateUniqueId();
 
-            lock (m_oLock)
-            {
                 m_lstCar.Add(car);
-            }
 
-            return true;
         }
 
 
         // Read Operation 1 - Get all cars
 
-        public IEnumerable<Car> GetAllCars()
+        public List<Car> GetAllCars()
         {
             return m_lstCar;
         }
@@ -77,7 +52,7 @@ namespace FactoryApplication.Repositories
 
         // Read Operation 2 - Get the car with the specified ID
 
-        public Car GetCar(int id)
+        public Car? GetCar(int id)
         {
             if (!m_lstCar.Any(car => car.Id == id))
             {
@@ -90,18 +65,15 @@ namespace FactoryApplication.Repositories
         }
 
 
-
         // Update Operation - Update the car with the specified ID
 
-        public bool UpdateCar(int id, Car newCar)
+        public void UpdateCar(int id, Car newCar)
         {
             if (!m_lstCar.Any(car => car.Id == id))
             {
-                return false;
+                throw new KeyNotFoundException($"Car with ID '{id}' not found.");
             }
 
-            lock (m_oLock)
-            {
                 var curCar= m_lstCar.FirstOrDefault(x => x.Id == id);
 
                 curCar.Manufacturer = newCar.Manufacturer;
@@ -111,28 +83,21 @@ namespace FactoryApplication.Repositories
                 curCar.IsAvailable = newCar.IsAvailable;
                 curCar.QuantityInStock = newCar.QuantityInStock;
                 curCar.Features = newCar.Features;
-            }
 
-            return true;
         }
 
 
         // Delete Operation - Delete the car with the specified ID
 
-        public bool DeleteCar(int id)
+        public void DeleteCar(int id)
         {
             var itemToDelete = m_lstCar.FirstOrDefault(car => car.Id == id);
             if (itemToDelete == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Email with ID '{id}' not found.");
             }
 
-            lock (m_oLock)
-            {
                 m_lstCar.Remove(itemToDelete);
-            }
-
-            return true;
         }
 
     }
