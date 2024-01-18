@@ -3,17 +3,6 @@
  * Author: Željko Kalajžić
  * Project Task: Homework 3 - Cars factory - Controller Implementation (CRUD operations)
  **********************************
- * Description:
- *  A program that demonstrates a simple CRUD interface.
- *  The program stores a list of cars and provides the user
-    with an API to execute CRUD operations:
-     - Create - Create a new Car model and insert it into storage
-     - Read All - Get a collection of all Car models in storage
-     - Read Specific - Get a Car model from storage by providing a unique identifier to the API
-     - Update - Apply changes to a specific Car in storage, identified by a unique value
-     - Delete - Delete a specific Car from storage, identified by a unique value
- *
- **********************************
  */
 
 using Microsoft.AspNetCore.Http;
@@ -24,33 +13,37 @@ using FactoryApplication.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FactoryApplication.Controllers.DTO;
+using FactoryApplication.Logic;
+using FactoryApplication.Filters;
 
 namespace FactoryApplication.Controllers
 {
-
+    [ErrorFilter]
     [ApiController]
+    [Route("api/[controller]")]
     public class CarController : ControllerBase
     {
 
-        private readonly ICarRepository carRepository;
+        private readonly ICarLogic _carLogic;
 
 
-        public CarController(ICarRepository carRepository)
+        public CarController(ICarLogic carLogic)
         {
-            this.carRepository = carRepository;
+            this._carLogic = carLogic;
         }
 
 
         // Create an car object
 
-        [HttpPost("/cars/new")]
-        public IActionResult CreateNewCar([FromBody] Car car)
+        [HttpPost]
+        public IActionResult Post([FromBody] NewCarDTo car)
         {
 
             if (car != null)
             {
-                carRepository.CreateNewCar(car);
-                return Ok("Car succesfully created!");
+                _carLogic.CreateNewCar(car.ToModel());
+                return Ok("Car successfully created!");
             }
             else
             {
@@ -61,19 +54,20 @@ namespace FactoryApplication.Controllers
 
          // Read Operation 1 - Get all cars
 
-        [HttpGet("/cars/all")]
-        public IActionResult GetAllCars()
+        [HttpGet]
+        public ActionResult<IEnumerable<CarInfoDTO>> Get()
         {
-            return Ok(carRepository.GetAllCars());
+            var allCars = _carLogic.GetCars().Select(x => CarInfoDTO.FromModel(x));
+            return Ok(allCars);
         }
 
 
         // Read Operation 2 - Get the car with the specified ID
 
-        [HttpGet("/cars/{id}")]
-        public IActionResult GetCarById([FromRoute] int id)
+        [HttpGet("{id}")]
+        public ActionResult<CarInfoDTO> Get(int id)
         {
-            var car = carRepository.GetCar(id);
+            var car = _carLogic.GetCar(id);
 
             if (car is null)
             {
@@ -81,15 +75,15 @@ namespace FactoryApplication.Controllers
             }
             else
             {
-                return Ok(car);
+                return Ok(CarInfoDTO.FromModel(car));
             }
         }
 
 
         // Update Operation - Update the car with the specified ID
 
-        [HttpPut("/cars/{id}")]
-        public IActionResult UpdateCarById([FromRoute] int id, [FromBody] Car updatedCar)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] NewCarDTo updatedCar)
         {
 
             if (updatedCar == null)
@@ -97,32 +91,31 @@ namespace FactoryApplication.Controllers
                 return BadRequest($"Error while updating an car!");
             }
 
-            var existingCar = carRepository.GetCar(id);
+            var existingCar = _carLogic.GetCar(id);
             if (existingCar == null)
             {
                 return NotFound($"Could not find the car with ID = {id}");
             }
 
-            carRepository.UpdateCar(id, updatedCar);
+            _carLogic.UpdateCar(id, updatedCar.ToModel());
 
-            return Ok($"Succesfully updated the car with ID = {id}");
+            return Ok($"Successfully updated the car with ID = {id}");
 
         }
 
-// Delete Operation - Delete the car with the specified ID
+        // Delete Operation - Delete the car with the specified ID
 
-[HttpDelete("/cars/{id}")]
-        public IActionResult DeleteCarById([FromRoute] int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            var car = carRepository.GetCar(id);
+            var car = _carLogic.GetCar(id);
             if (car == null)
             {
                 return NotFound($"Could not find an car with ID = {id}");
             }
 
-            carRepository.DeleteCar(id);
-            return Ok($"Succesfully deleted the car with ID = {id}");
-
+            _carLogic.DeleteCar(id);
+            return Ok($"Successfully deleted the car with ID = {id}");
         }
     }
 }

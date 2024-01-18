@@ -27,7 +27,7 @@ namespace FactoryApplication.Repositories
         private List<Car> m_lstCar;
 
         public CarRepository()
-        {       
+        {
             m_lstCar = new List<Car>();
         }
 
@@ -37,7 +37,7 @@ namespace FactoryApplication.Repositories
         public void CreateNewCar(Car car)
         {
 
-                m_lstCar.Add(car);
+            m_lstCar.Add(car);
 
         }
 
@@ -74,16 +74,15 @@ namespace FactoryApplication.Repositories
                 throw new KeyNotFoundException($"Car with ID '{id}' not found.");
             }
 
-                var curCar= m_lstCar.FirstOrDefault(x => x.Id == id);
+            var curCar = m_lstCar.FirstOrDefault(x => x.Id == id);
 
-                curCar.Manufacturer = newCar.Manufacturer;
-                curCar.Model = newCar.Model;
-                curCar.Price = newCar.Price;
-                curCar.ManufacturingDate = newCar.ManufacturingDate;
-                curCar.IsAvailable = newCar.IsAvailable;
-                curCar.QuantityInStock = newCar.QuantityInStock;
-                curCar.Features = newCar.Features;
-
+            curCar.Manufacturer = newCar.Manufacturer;
+            curCar.Model = newCar.Model;
+            curCar.Price = newCar.Price;
+            curCar.ManufacturingDate = newCar.ManufacturingDate;
+            curCar.IsAvailable = newCar.IsAvailable;
+            curCar.QuantityInStock = newCar.QuantityInStock;
+            curCar.Features = newCar.Features;
         }
 
 
@@ -94,10 +93,15 @@ namespace FactoryApplication.Repositories
             var itemToDelete = m_lstCar.FirstOrDefault(car => car.Id == id);
             if (itemToDelete == null)
             {
-                throw new KeyNotFoundException($"Email with ID '{id}' not found.");
+                throw new KeyNotFoundException($"Car with ID '{id}' not found.");
             }
 
-                m_lstCar.Remove(itemToDelete);
+            m_lstCar.Remove(itemToDelete);
+        }
+
+        public bool GetManufacturerAndModel(string manufacturer, string model)
+        {
+            return false;
         }
 
     }
