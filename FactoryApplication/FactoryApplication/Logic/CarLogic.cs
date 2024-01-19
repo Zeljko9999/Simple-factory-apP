@@ -63,6 +63,18 @@ namespace FactoryApplication.Logic
             {
                 throw new LogicException($"Price can not be negative.");
             }
+
+             // Convert decimal to string
+             string numberAsString = price.ToString();
+
+             int decimalIndex = numberAsString.IndexOf('.');
+
+             // Check if the decimal point exists and if there are more than 2 digits after it
+             if (decimalIndex != -1 && numberAsString.Length - decimalIndex > 3)
+             {
+                throw new LogicException("Decimal number should have maximum 2 digits after the decimal point.");
+             }
+          
         }
 
         private void ValidateDManufacturingDateField(DateOnly? date)

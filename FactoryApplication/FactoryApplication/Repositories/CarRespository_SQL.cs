@@ -63,7 +63,7 @@ namespace FactoryApplication.Repositories
             {
                 foreach (var feature in car.Features)
                 {
-                    if (feature is not null)
+                    if (!string.IsNullOrEmpty(feature))
                     {
                         int featureId = GetIdOfFeature(connection, feature);
                         commandCarToFeature.Parameters["$featureId"].Value = featureId;
@@ -148,7 +148,7 @@ namespace FactoryApplication.Repositories
                         Id = carId,
                         Manufacturer = reader.GetString(1),
                         Model = reader.GetString(2),
-                        Price = reader.GetInt32(3),
+                        Price = reader.GetDecimal(3),
                         ManufacturingDate = DateOnly.ParseExact(reader.GetString(4), _dbDateOnlyFormat, null),
                         QuantityInStock = reader.GetInt32(5),
                         IsAvailable = reader.GetInt32(6) != 0,
@@ -253,7 +253,7 @@ namespace FactoryApplication.Repositories
         }
 
         // Can not post 2 same pairs of manufacturer & model
-        public bool GetManufacturerAndModel(string manufacturer, string model)
+        public bool GetManufacturerAndModel(string model, string manufacturer)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
