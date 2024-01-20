@@ -15,6 +15,9 @@
 
 using FactoryApplication.Repositories;
 using FactoryApplication.Repositories.Interfaces;
+using FactoryApplication.Logic;
+using Microsoft.Extensions.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<ICarLogic, CarLogic>();
 builder.Services.AddSingleton<ICarRepository, CarRespository_SQL>();
+
+builder.Services.AddCors(p => p.AddPolicy("cors_policy_allow_all", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -37,6 +46,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseCors("cors_policy_allow_all");
 
 app.MapControllers();
 

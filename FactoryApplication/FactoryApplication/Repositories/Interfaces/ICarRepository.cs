@@ -19,5 +19,7 @@ namespace FactoryApplication.Repositories.Interfaces
 
 
         void DeleteCar(int id);
+
+        public bool GetManufacturerAndModel(string manufacturer, string model);
     }
 }
