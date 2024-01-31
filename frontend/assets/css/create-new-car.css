@@ -1,0 +1,10 @@
+.new-car-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 10px;
+}
+
+.param {
+    margin-top: 5px;
+}
