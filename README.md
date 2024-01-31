@@ -1,1 +1,1 @@
-# Zeljko9999-hw-03
+Seminar iz kolegija Programsko inženjerstvo i Distribuirani sustavi
